@@ -1,0 +1,37 @@
+/* NursingList.css */
+.nursing-list-wrapper {
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 20px;
+  }
+  
+  .rounded-card {
+    border-radius: 15px; /* Round the corners of the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow for depth */
+  }
+  
+  .small-table {
+    font-size: 0.85rem; /* Make the text smaller */
+  }
+  
+  @media (max-width: 768px) {
+    .small-table {
+      font-size: 0.75rem; /* Make text even smaller for smaller screens */
+    }
+  }
+  
+  .pad {
+    padding: 10px 0;
+  }
+  
+  .filter-container {
+    margin-bottom: 20px;
+  }
+  
+  .pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
