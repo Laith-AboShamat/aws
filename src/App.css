@@ -34,4 +34,6 @@
     align-items: center;
     margin-top: 20px;
   }
-  
+  .search-wrapper {
+    margin: 20px 0;
+  }
