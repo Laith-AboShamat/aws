@@ -12,6 +12,7 @@ const NursingList = () => {
     email: '',
     status: '',
   });
+  const [editingUser, setEditingUser] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +22,7 @@ const NursingList = () => {
         
         // Map API response to match field names expected in the UI
         const mappedData = data.map(user => ({
+          id: user.id, // Ensure 'id' is unique and not modified
           givenName: user.GivenName,
           familyName: user.FamilyName,
           phone: user.Phone,
@@ -60,10 +62,10 @@ const NursingList = () => {
 
     const newUserWithDates = {
       ...newUser,
-      dateCreated: new Date().toISOString().split('T')[0], // Current date
-      dateLastModified: new Date().toISOString().split('T')[0], // Current date
-      createdBy: null, // Set createdBy to null
-      lastModifiedBy: null, // Set lastModifiedBy to null
+      dateCreated: new Date().toISOString().split('T')[0],
+      dateLastModified: new Date().toISOString().split('T')[0],
+      createdBy: null,
+      lastModifiedBy: null,
     };
 
     try {
@@ -97,9 +99,51 @@ const NursingList = () => {
     }
   };
 
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
+
+    if (!editingUser.givenName || !editingUser.familyName || !editingUser.phone || !editingUser.email || !editingUser.status) {
+      setAlert({ visible: true, message: 'Please fill in all fields.', color: 'danger' });
+      return;
+    }
+
+    const updatedUser = {
+      ...editingUser,
+      dateLastModified: new Date().toISOString().split('T')[0],
+      lastModifiedBy: 'unknown',
+    };
+
+    try {
+      const response = await fetch('https://djnh3nx6uf.execute-api.eu-north-1.amazonaws.com/UpdateNurseData', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedUser),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setUsers(users.map(user => (user.email === data.email ? data : user)));
+      setEditingUser(null);
+
+      setAlert({ visible: true, message: 'User updated successfully!', color: 'success' });
+    } catch (error) {
+      console.error('Error updating user:', error);
+      setAlert({ visible: true, message: 'Error updating user on server.', color: 'danger' });
+    }
+  };
+
+  const handleEditClick = (user) => {
+    setEditingUser({ ...user });
+  };
+
   const filteredUsers = users.filter(user =>
     Object.values(user).some(value =>
-      value.toString().toLowerCase().includes(search.toLowerCase())
+      (value ? value.toString().toLowerCase() : '').includes(search.toLowerCase())
     )
   );
 
@@ -187,6 +231,69 @@ const NursingList = () => {
             />
           </div>
 
+          {editingUser && (
+            <CForm onSubmit={handleUpdateUser} className="update-form">
+              <CRow>
+                <CCol md="2">
+                  <CFormInput
+                    type='text'
+                    name='givenName'
+                    placeholder='Given Name'
+                    value={editingUser.givenName}
+                    onChange={(e) => setEditingUser({ ...editingUser, givenName: e.target.value })}
+                    required
+                  />
+                </CCol>
+                <CCol md="2">
+                  <CFormInput
+                    type='text'
+                    name='familyName'
+                    placeholder='Family Name'
+                    value={editingUser.familyName}
+                    onChange={(e) => setEditingUser({ ...editingUser, familyName: e.target.value })}
+                    required
+                  />
+                </CCol>
+                <CCol md="2">
+                  <CFormInput
+                    type='text'
+                    name='phone'
+                    placeholder='Phone'
+                    value={editingUser.phone}
+                    onChange={(e) => setEditingUser({ ...editingUser, phone: e.target.value })}
+                    required
+                  />
+                </CCol>
+                <CCol md="2">
+                  <CFormInput
+                    type='email'
+                    name='email'
+                    placeholder='Email'
+                    value={editingUser.email}
+                    onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                    required
+                  />
+                </CCol>
+                <CCol md="2">
+                  <CFormSelect
+                    name="status"
+                    value={editingUser.status}
+                    onChange={(e) => setEditingUser({ ...editingUser, status: e.target.value })}
+                    required
+                  >
+                    <option value="">Select Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </CFormSelect>
+                </CCol>
+                <CCol md="2">
+                  <CButton type='submit' color='success'>Update User</CButton>
+                  <CButton color='secondary' onClick={() => setEditingUser(null)}>Cancel</CButton>
+                </CCol>
+              </CRow>
+            </CForm>
+          )}
+
           <CTable striped responsive="sm" className="small-table">
             <CTableHead>
               <CTableRow>
@@ -199,11 +306,12 @@ const NursingList = () => {
                 <CTableHeaderCell scope="col">Date Created</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Last Modified By</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Date Last Modified</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {filteredUsers.map((user, index) => (
-                <CTableRow key={index}>
+              {filteredUsers.map((user) => (
+                <CTableRow key={user.email}> {/* Use email as the key */}
                   <CTableDataCell>{user.givenName}</CTableDataCell>
                   <CTableDataCell>{user.familyName}</CTableDataCell>
                   <CTableDataCell>{user.phone}</CTableDataCell>
@@ -213,6 +321,9 @@ const NursingList = () => {
                   <CTableDataCell>{user.dateCreated}</CTableDataCell>
                   <CTableDataCell>{user.lastModifiedBy}</CTableDataCell>
                   <CTableDataCell>{user.dateLastModified}</CTableDataCell>
+                  <CTableDataCell>
+                    <CButton color='warning' onClick={() => handleEditClick(user)}>Edit</CButton>
+                  </CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>
