@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCard, CCardBody, CCardHeader, CButton, CForm, CFormInput, CRow, CCol } from '@coreui/react';
+import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CCard, CCardBody, CCardHeader, CButton, CForm, CFormInput, CRow, CCol, CAlert, CFormSelect } from '@coreui/react';
 
 const NursingList = () => {
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState([]);
+  const [alert, setAlert] = useState({ visible: false, message: '', color: '' }); // Alert state
   const [newUser, setNewUser] = useState({
     dateCreated: '',
     dateLastModified: '',
@@ -15,8 +16,6 @@ const NursingList = () => {
     email: '',
     status: '',
   });
-
-  // Load users from localStorage on component mount
   useEffect(() => {
     const storedUsers = localStorage.getItem('users');
     if (storedUsers) {
@@ -24,7 +23,6 @@ const NursingList = () => {
     }
   }, []);
 
-  // Save users to localStorage whenever they are updated
   useEffect(() => {
     localStorage.setItem('users', JSON.stringify(users));
   }, [users]);
@@ -35,12 +33,20 @@ const NursingList = () => {
 
   const handleAddUser = (e) => {
     e.preventDefault();
+
+    if (!newUser.givenName || !newUser.familyName || !newUser.phone || !newUser.email || !newUser.status) {
+      setAlert({ visible: true, message: 'Please fill in all fields.', color: 'danger' });
+      return;
+    }
+
     const newUserWithDates = {
       ...newUser,
       dateCreated: new Date().toISOString().split('T')[0], // Current date
       dateLastModified: new Date().toISOString().split('T')[0], // Current date
     };
+
     setUsers([...users, newUserWithDates]);
+
     setNewUser({
       dateCreated: '',
       dateLastModified: '',
@@ -52,6 +58,9 @@ const NursingList = () => {
       email: '',
       status: '',
     });
+
+
+    setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
   };
 
   const filteredUsers = users.filter(user =>
@@ -67,7 +76,13 @@ const NursingList = () => {
           <h2 className='pad'>Nursing List</h2>
         </CCardHeader>
         <CCardBody>
-          {/* Add User Form */}
+
+          {alert.visible && (
+            <CAlert color={alert.color} dismissible onClose={() => setAlert({ visible: false })}>
+              {alert.message}
+            </CAlert>
+          )}
+
           <CForm onSubmit={handleAddUser}>
             <CRow>
               <CCol md="2">
@@ -111,14 +126,16 @@ const NursingList = () => {
                 />
               </CCol>
               <CCol md="2">
-                <CFormInput
-                  type='text'
-                  name='status'
-                  placeholder='Status'
+                <CFormSelect
+                  name="status"
                   value={newUser.status}
                   onChange={handleInputChange}
                   required
-                />
+                >
+                  <option value="">Select Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </CFormSelect>
               </CCol>
               <CCol md="2">
                 <CButton type='submit' color='primary'>Add User</CButton>
@@ -126,7 +143,6 @@ const NursingList = () => {
             </CRow>
           </CForm>
 
-          {/* Search */}
           <div className='search-wrapper'>
             <input
               type='text'
@@ -137,7 +153,6 @@ const NursingList = () => {
             />
           </div>
 
-          {/* User Table */}
           <CTable striped responsive="sm" className="small-table">
             <CTableHead>
               <CTableRow>

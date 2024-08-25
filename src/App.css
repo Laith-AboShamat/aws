@@ -37,3 +37,28 @@
   .search-wrapper {
     margin: 20px 0;
   }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  /* In your App.css or relevant CSS file */
+.sidebar-full-height {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-full-height .csidenav {
+  flex: 1; /* Take up remaining space */
+}
+
+.sidebar-full-height .csidenav .cnav-item {
+  margin-bottom: 0.5rem; /* Space between items */
+}
+
+
+  
