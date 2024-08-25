@@ -4,23 +4,42 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 const NursingList = () => {
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState([]);
-  const [alert, setAlert] = useState({ visible: false, message: '', color: '' }); // Alert state
+  const [alert, setAlert] = useState({ visible: false, message: '', color: '' });
   const [newUser, setNewUser] = useState({
-    dateCreated: '',
-    dateLastModified: '',
-    createdBy: '',
-    lastModifiedBy: '',
     givenName: '',
     familyName: '',
     phone: '',
     email: '',
     status: '',
   });
+
   useEffect(() => {
-    const storedUsers = localStorage.getItem('users');
-    if (storedUsers) {
-      setUsers(JSON.parse(storedUsers));
-    }
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://b6yxpbgn7k.execute-api.eu-north-1.amazonaws.com/GetNurseData');
+        const data = await response.json();
+        
+        // Map API response to match field names expected in the UI
+        const mappedData = data.map(user => ({
+          givenName: user.GivenName,
+          familyName: user.FamilyName,
+          phone: user.Phone,
+          email: user.Email,
+          status: user.Status,
+          createdBy: user.CreatedBy,
+          dateCreated: user.DateCreated,
+          lastModifiedBy: user.LastModifiedBy,
+          dateLastModified: user.DateLastModified
+        }));
+        
+        setUsers(mappedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setAlert({ visible: true, message: 'Error fetching data from server.', color: 'danger' });
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -31,7 +50,7 @@ const NursingList = () => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
 
-  const handleAddUser = (e) => {
+  const handleAddUser = async (e) => {
     e.preventDefault();
 
     if (!newUser.givenName || !newUser.familyName || !newUser.phone || !newUser.email || !newUser.status) {
@@ -43,24 +62,39 @@ const NursingList = () => {
       ...newUser,
       dateCreated: new Date().toISOString().split('T')[0], // Current date
       dateLastModified: new Date().toISOString().split('T')[0], // Current date
+      createdBy: null, // Set createdBy to null
+      lastModifiedBy: null, // Set lastModifiedBy to null
     };
 
-    setUsers([...users, newUserWithDates]);
+    try {
+      const response = await fetch('https://iswtf9imy1.execute-api.eu-north-1.amazonaws.com/CreateNurseData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUserWithDates),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-    setNewUser({
-      dateCreated: '',
-      dateLastModified: '',
-      createdBy: '',
-      lastModifiedBy: '',
-      givenName: '',
-      familyName: '',
-      phone: '',
-      email: '',
-      status: '',
-    });
+      const data = await response.json();
+      setUsers([...users, data]);
 
+      setNewUser({
+        givenName: '',
+        familyName: '',
+        phone: '',
+        email: '',
+        status: '',
+      });
 
-    setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
+      setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
+    } catch (error) {
+      console.error('Error adding user:', error);
+      setAlert({ visible: true, message: 'Error adding user to server.', color: 'danger' });
+    }
   };
 
   const filteredUsers = users.filter(user =>
