@@ -1,50 +1,51 @@
 .nursing-list-wrapper {
-    padding-left: 100px;
-    padding-right: 100px;
-    padding-top: 20px;
-  }
-  
-  .rounded-card {
-    border-radius: 15px;
-    margin-left: 50px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .small-table {
-    font-size: 0.85rem; 
-  }
-  
-  @media (max-width: 768px) {
-    .small-table {
-      font-size: 0.75rem; 
-    }
-  }
-  
-  .pad {
-    padding: 10px 0;
-  }
-  
-  .filter-container {
-    margin-bottom: 20px;
-  }
-  
-  .pagination-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-  }
-  .search-wrapper {
-    margin: 20px 0;
-  }
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .content {
-    padding: 20px;
-  }
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 20px;
+}
+
+.rounded-card {
+  border-radius: 15px;
+  margin-left: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.small-table {
+  font-size: 0.85rem; 
+}
+
+.nursing-scheduler{
+  margin-top: 30px;
+  margin-left: 100px;
+}
+
+.pad {
+  padding: 10px 0;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.search-wrapper {
+  margin: 20px 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding: 20px;
+}
 
 .sidebar-full-height {
   height: 100vh; 
@@ -60,7 +61,6 @@
   margin-bottom: 0.5rem; 
 }
 
-
 .nursing-list-wrapper {
   padding: 1rem;
 }
@@ -70,43 +70,5 @@
 }
 
 .small-table {
-
   font-size: 0.875rem;
 }
-
-@media (max-width: 768px) {
-  .small-table {
-    font-size: 0.75rem;
-  }
-
-  .small-table thead {
-    display: none;
-  }
-
-  .small-table tbody, .small-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  .small-table td {
-    display: block;
-    width: 100%;
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
-  }
-
-  .small-table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 50%;
-    padding-left: 0.5rem;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-}
-
-
-
-  

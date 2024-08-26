@@ -1,6 +1,6 @@
 const Scheduler = () => {
     return (
-      <div className='nursing-list-wrapper'>
+      <div className='nursing-scheduler'>
         <h2>Scheduler</h2>
         <div className="calendar">
           <p className='pad'>Calendar will be rendered here.</p>
