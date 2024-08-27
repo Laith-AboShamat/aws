@@ -4,6 +4,7 @@ import AlertComponent from './AlertComponent';
 import NurseFormComponent from './NurseFormComponent';
 import SearchComponent from './SearchComponent';
 import NurseTableComponent from './NurseTableComponent';
+import DotLoader from 'react-spinners/DotLoader';
 
 const NursingList = () => {
   const [search, setSearch] = useState('');
@@ -17,9 +18,11 @@ const NursingList = () => {
     status: '',
   });
   const [editingUser, setEditingUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch('https://b6yxpbgn7k.execute-api.eu-north-1.amazonaws.com/GetNurseData');
         const data = await response.json();
@@ -41,6 +44,8 @@ const NursingList = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
         setAlert({ visible: true, message: 'Error fetching data from server.', color: 'danger' });
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -53,20 +58,29 @@ const NursingList = () => {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-
+    
     if (!newUser.givenName || !newUser.familyName || !newUser.phone || !newUser.email || !newUser.status) {
       setAlert({ visible: true, message: 'Please fill in all fields.', color: 'danger' });
       return;
     }
-
+  
+    const formatDateTime = (date) => {
+      return new Date(date).toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+      });
+    };
+  
     const newUserWithDates = {
       ...newUser,
-      dateCreated: new Date().toISOString().split('T')[0],
-      dateLastModified: new Date().toISOString().split('T')[0],
+      dateCreated: formatDateTime(new Date()),
+      dateLastModified: formatDateTime(new Date()),
       createdBy: null,
       lastModifiedBy: null,
     };
-
+  
     try {
       const response = await fetch('https://iswtf9imy1.execute-api.eu-north-1.amazonaws.com/CreateNurseData', {
         method: 'POST',
@@ -75,14 +89,28 @@ const NursingList = () => {
         },
         body: JSON.stringify(newUserWithDates),
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const data = await response.json();
-      setUsers([...users, data]);
-
+  
+      const newNurse = {
+        id: data.id || 'new-id',
+        givenName: data.givenName || newUser.givenName,
+        familyName: data.familyName || newUser.familyName,
+        phone: data.phone || newUser.phone,
+        email: data.email || newUser.email,
+        status: data.status || newUser.status,
+        createdBy: data.createdBy || newUser.createdBy,
+        dateCreated: formatDateTime(data.dateCreated || newUser.dateCreated),
+        lastModifiedBy: data.lastModifiedBy || newUser.lastModifiedBy,
+        dateLastModified: formatDateTime(data.dateLastModified || newUser.dateLastModified),
+      };
+  
+      setUsers([...users, newNurse]);
+  
       setNewUser({
         givenName: '',
         familyName: '',
@@ -90,13 +118,14 @@ const NursingList = () => {
         email: '',
         status: '',
       });
-
+  
       setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
     } catch (error) {
       console.error('Error adding user:', error);
       setAlert({ visible: true, message: 'Error adding user to server.', color: 'danger' });
     }
   };
+  
 
   const handleUpdateUser = async (e) => {
     e.preventDefault();
@@ -169,7 +198,8 @@ const NursingList = () => {
 
           <SearchComponent search={search} setSearch={setSearch} />
 
-          <NurseTableComponent users={filteredUsers} handleEditClick={handleEditClick} />
+          {/* Pass isLoading prop to NurseTableComponent */}
+          <NurseTableComponent users={filteredUsers} handleEditClick={handleEditClick} isLoading={isLoading} />
         </CCardBody>
       </CCard>
     </div>
