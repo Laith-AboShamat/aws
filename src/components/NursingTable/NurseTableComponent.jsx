@@ -2,7 +2,7 @@ import React from 'react';
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CAlert } from '@coreui/react';
 import DotLoader from 'react-spinners/DotLoader';
 
-const NurseTableComponent = ({ users, handleEditClick, isLoading }) => {
+const NurseTableComponent = ({ users, handleEditClick, handleDeleteClick, isLoading }) => {
   const cellStyle = { textAlign: 'center', verticalAlign: 'middle' };
 
   return (
@@ -13,7 +13,6 @@ const NurseTableComponent = ({ users, handleEditClick, isLoading }) => {
         </div>
       ) : (
         <>
-          {/* Show alert if no users are available */}
           {users.length === 0 ? (
             <CAlert color="info" dismissible>
               No users available.
@@ -36,7 +35,7 @@ const NurseTableComponent = ({ users, handleEditClick, isLoading }) => {
               </CTableHead>
               <CTableBody>
                 {users.map((user) => (
-                  <CTableRow key={user.email}>
+                  <CTableRow key={user.id}>
                     <CTableDataCell style={cellStyle}>{user.givenName}</CTableDataCell>
                     <CTableDataCell style={cellStyle}>{user.familyName}</CTableDataCell>
                     <CTableDataCell style={cellStyle}>{user.phone}</CTableDataCell>
@@ -46,9 +45,12 @@ const NurseTableComponent = ({ users, handleEditClick, isLoading }) => {
                     <CTableDataCell style={cellStyle}>{user.dateCreated}</CTableDataCell>
                     <CTableDataCell style={cellStyle}>{user.lastModifiedBy}</CTableDataCell>
                     <CTableDataCell style={cellStyle}>{user.dateLastModified}</CTableDataCell>
-                    <CTableDataCell style={{ ...cellStyle, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <CTableDataCell style={{ ...cellStyle, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <CButton color="warning" onClick={() => handleEditClick(user)}>
                         Edit
+                      </CButton>
+                      <CButton color="danger" onClick={() => handleDeleteClick(user.id)}>
+                        Delete
                       </CButton>
                     </CTableDataCell>
                   </CTableRow>

@@ -125,22 +125,25 @@ const NursingList = () => {
       setAlert({ visible: true, message: 'Error adding user to server.', color: 'danger' });
     }
   };
-  
 
   const handleUpdateUser = async (e) => {
     e.preventDefault();
-
+  
     if (!editingUser.givenName || !editingUser.familyName || !editingUser.phone || !editingUser.email || !editingUser.status) {
       setAlert({ visible: true, message: 'Please fill in all fields.', color: 'danger' });
       return;
     }
-
+  
     const updatedUser = {
-      ...editingUser,
+      id: editingUser.id,
+      givenName: editingUser.givenName,
+      familyName: editingUser.familyName,
+      phone: editingUser.phone,
+      status: editingUser.status,
       dateLastModified: new Date().toISOString().split('T')[0],
       lastModifiedBy: 'unknown',
     };
-
+  
     try {
       const response = await fetch('https://djnh3nx6uf.execute-api.eu-north-1.amazonaws.com/UpdateNurseData', {
         method: 'PUT',
@@ -149,15 +152,15 @@ const NursingList = () => {
         },
         body: JSON.stringify(updatedUser),
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
+  
       const data = await response.json();
-      setUsers(users.map(user => (user.email === data.email ? data : user)));
+      setUsers(users.map(user => (user.id === data.id ? data : user)));
       setEditingUser(null);
-
+  
       setAlert({ visible: true, message: 'User updated successfully!', color: 'success' });
     } catch (error) {
       console.error('Error updating user:', error);
@@ -165,6 +168,31 @@ const NursingList = () => {
     }
   };
 
+  const handleDeleteUser = async (user) => {
+    try {
+      const response = await fetch('https://6di25phvk3.execute-api.eu-north-1.amazonaws.com/DeleteNurseData', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: user.id }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      console.log('Delete response:', data);
+  
+      setUsers(users.filter(u => u.id !== user.id));
+      setAlert({ visible: true, message: 'User deleted successfully!', color: 'success' });
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      setAlert({ visible: true, message: 'Error deleting user from server.', color: 'danger' });
+    }
+  };
+  
   const handleEditClick = (user) => {
     setEditingUser({ ...user });
   };
@@ -198,8 +226,12 @@ const NursingList = () => {
 
           <SearchComponent search={search} setSearch={setSearch} />
 
-          {/* Pass isLoading prop to NurseTableComponent */}
-          <NurseTableComponent users={filteredUsers} handleEditClick={handleEditClick} isLoading={isLoading} />
+          <NurseTableComponent 
+            users={filteredUsers} 
+            handleEditClick={handleEditClick} 
+            handleDeleteClick={handleDeleteUser} 
+            isLoading={isLoading} 
+          />
         </CCardBody>
       </CCard>
     </div>
