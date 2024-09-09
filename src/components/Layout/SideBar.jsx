@@ -4,11 +4,7 @@ import { CIcon } from '@coreui/icons-react';
 import { cilPuzzle, cilContact, cilCalendar, cilSettings, cilHome, cilAccountLogout } from '@coreui/icons';
 import nurseImage from '../../assets/nurse.jpg';
 
-const Sidebar = ({ setActiveSection }) => {
-  const handleLogout = () => {
-    console.log('Logout button clicked');
-  };
-
+const Sidebar = ({ setActiveSection, signOut }) => {
   return (
     <CSidebar className="border-end sidebar-full-height" unfoldable>
       <CSidebarHeader className="border-bottom">
@@ -16,6 +12,7 @@ const Sidebar = ({ setActiveSection }) => {
           <img src={nurseImage} alt="Nurse" style={{ height: '40px', width: 'auto' }} />
         </CSidebarBrand>
       </CSidebarHeader>
+      
       <CSidebarNav>
         <CNavTitle>Nursing Scheduler</CNavTitle>
         
@@ -53,11 +50,11 @@ const Sidebar = ({ setActiveSection }) => {
           <CNavItem href="#"><span className="nav-icon"><span className="nav-icon-bullet"></span></span> Nav dropdown item2</CNavItem>
         </CNavGroup>
 
-        {/* Logout Button */}
         <CNavItem className="mt-auto">
-          <CButton color="red" className="w-60" onClick={handleLogout}>
+          <CButton title='Signout' onClick={signOut}>
             <CIcon customClassName="nav-icon" icon={cilAccountLogout} />
           </CButton>
+          SignOut
         </CNavItem>
       </CSidebarNav>
     </CSidebar>

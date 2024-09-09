@@ -1,3 +1,31 @@
+.sidebar-full-height {
+  height: 100vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-full-height .csidenav {
+  flex: 1;
+}
+
+.sidebar-full-height .csidenav .cnav-item {
+  margin-bottom: 0.5rem; 
+}
+
+
+.content {
+  padding: 20px;
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .nursing-list-wrapper {
   padding-left: 100px;
   padding-right: 100px;
@@ -14,7 +42,7 @@
   font-size: 0.85rem; 
 }
 
-.nursing-scheduler{
+.nursing-scheduler {
   margin-top: 30px;
   margin-left: 100px;
 }
@@ -38,37 +66,43 @@
   margin: 20px 0;
 }
 
-.wrapper {
+.cbutton {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: start;
 }
 
-.content {
-  padding: 20px;
+.csidenav .cnav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: var(--cui-text-color);
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.sidebar-full-height {
-  height: 100vh; 
+.csidenav .cnav-item:hover {
+  background-color: var(--cui-primary);
+  color: #fff;
+}
+
+.csidenav .cnav-item .nav-icon {
+  margin-right: 0.75rem;
+}
+
+.csidenav .cnav-item span {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.csidenav .cnav-item.collapsed {
+  display: none;
+}
+
+.csidenav .cnav-item.collapsed .nav-icon {
+  display: block;
 }
 
 .sidebar-full-height .csidenav {
-  flex: 1;
-}
-
-.sidebar-full-height .csidenav .cnav-item {
-  margin-bottom: 0.5rem; 
-}
-
-.nursing-list-wrapper {
-  padding: 1rem;
-}
-
-.rounded-card {
-  border-radius: 0.5rem;
-}
-
-.small-table {
-  font-size: 0.875rem;
+  padding-top: 1rem;
 }

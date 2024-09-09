@@ -3,11 +3,12 @@ import { CHeader, CHeaderNav, CNavItem, CNavLink, CAvatar, CBadge } from '@coreu
 import { CIcon } from '@coreui/icons-react'
 import { cilBell } from '@coreui/icons'
 import avatar from '../../assets/avatar.png'
+import Sidebar from './SideBar'
 
 const Header = () => {
   return (
-    <CHeader position="sticky" className="" style={{ marginLeft: '80px' }}> {/* Adjust the left margin based on your sidebar width */}
-      <CHeaderNav className="d-md-down-none me-auto align-items-center"> {/* Flex utility to center items */}
+    <CHeader position="sticky" className="" style={{ marginLeft: '80px' }}>
+      <CHeaderNav className="d-md-down-none me-auto align-items-center">
         <CNavItem>
           <CNavLink href="#">Settings</CNavLink>
         </CNavItem>
@@ -16,8 +17,7 @@ const Header = () => {
         </CNavItem>
       </CHeaderNav>
 
-      <CHeaderNav className="ms-3 align-items-center"> {/* Flex utility to center items */}
-        {/* Notifications */}
+      <CHeaderNav className="ms-3 align-items-center">
         <CNavItem className="d-flex align-items-center">
           <CNavLink href="#">
             <CIcon icon={cilBell} size="lg" />
@@ -25,7 +25,6 @@ const Header = () => {
           </CNavLink>
         </CNavItem>
 
-        {/* Avatar */}
         <CNavItem className="d-flex align-items-center">
           <CNavLink href="#">
             <CAvatar src={avatar} size="md" />
