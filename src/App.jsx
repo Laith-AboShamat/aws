@@ -11,6 +11,7 @@ import Sidebar from './components/Layout/SideBar';
 import NursingList from './components/NursingTable/NursingList';
 import Scheduler from './components/Layout/Scheduler';
 import Header from './components/Layout/Header';
+import AddNurse from './components/Layout/AddNurse';
 
 Amplify.configure(awsconfig);
 
@@ -28,6 +29,7 @@ function App() {
             
             {activeSection === 'nursingList' && <NursingList />}
             {activeSection === 'scheduler' && <Scheduler />}
+            {activeSection === 'addNurse' && <AddNurse />} {/* Render AddNurse component */}
           </div>
         </div>
       )}

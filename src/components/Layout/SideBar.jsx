@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSidebar, CSidebarHeader, CSidebarBrand, CSidebarNav, CNavTitle, CNavItem, CNavGroup, CBadge, CButton } from '@coreui/react';
 import { CIcon } from '@coreui/icons-react';
-import { cilPuzzle, cilContact, cilCalendar, cilSettings, cilHome, cilAccountLogout } from '@coreui/icons';
+import { cilPuzzle, cilContact, cilCalendar, cilSettings, cilHome, cilAccountLogout, cilPlus } from '@coreui/icons'; // Import the plus icon
 import nurseImage from '../../assets/nurse.jpg';
 
 const Sidebar = ({ setActiveSection, signOut }) => {
@@ -12,13 +12,25 @@ const Sidebar = ({ setActiveSection, signOut }) => {
           <img src={nurseImage} alt="Nurse" style={{ height: '40px', width: 'auto' }} />
         </CSidebarBrand>
       </CSidebarHeader>
+
       
       <CSidebarNav>
         <CNavTitle>Nursing Scheduler</CNavTitle>
+
+        <CNavItem href="#" onClick={() => setActiveSection('home')}>
+          <CIcon customClassName="nav-icon" icon={cilHome} />
+          Home
+        </CNavItem>
         
         <CNavItem href="#" onClick={() => setActiveSection('nursingList')}>
           <CIcon customClassName="nav-icon" icon={cilContact} /> 
           Nursing List
+          <CBadge color="primary ms-auto">NEW</CBadge>
+        </CNavItem>
+
+        <CNavItem href="#" onClick={() => setActiveSection('addNurse')}>
+          <CIcon customClassName="nav-icon" icon={cilPlus} />
+          Add Nurse
           <CBadge color="primary ms-auto">NEW</CBadge>
         </CNavItem>
         
@@ -26,11 +38,6 @@ const Sidebar = ({ setActiveSection, signOut }) => {
           <CIcon customClassName="nav-icon" icon={cilCalendar} /> 
           Scheduler 
           <CBadge color="primary ms-auto">NEW</CBadge>
-        </CNavItem>
-
-        <CNavItem href="#" onClick={() => setActiveSection('home')}>
-          <CIcon customClassName="nav-icon" icon={cilHome} />
-          Home
         </CNavItem>
 
         <CNavItem href="#" onClick={() => setActiveSection('settings')}>
