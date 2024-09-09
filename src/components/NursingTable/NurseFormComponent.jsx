@@ -61,10 +61,12 @@ const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCanc
           </CFormSelect>
         </CCol>
         <CCol md="2">
-          <CButton type='submit' color={isEditing ? 'success' : 'primary'}>
-            {isEditing ? 'Update User' : 'Add User'}
-          </CButton>
-          {isEditing && <CButton color='secondary' onClick={handleCancel}>Cancel</CButton>}
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <CButton type='submit' color={isEditing ? 'success' : 'primary'}>
+              {isEditing ? 'Update User' : 'Add User'}
+            </CButton>
+            {isEditing && <CButton color='secondary' onClick={handleCancel}>Cancel</CButton>}
+          </div>
         </CCol>
       </CRow>
     </CForm>
