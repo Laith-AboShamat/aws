@@ -20,8 +20,10 @@ const NursingList = () => {
       setIsLoading(true);
       try {
         const response = await fetch('https://b6yxpbgn7k.execute-api.eu-north-1.amazonaws.com/GetNurseData');
+        if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
 
+        // Map the data to the expected format
         const mappedData = data.map(user => ({
           id: user.id,
           givenName: user.GivenName,
@@ -46,6 +48,27 @@ const NursingList = () => {
 
     fetchData();
   }, []);
+
+  const handleDeleteClick = async (id) => {
+    const isConfirmed = window.confirm('Are you sure you want to delete this nurse?');
+    if (!isConfirmed) return;
+
+    try {
+      const response = await fetch('https://7krr77tjrd.execute-api.eu-north-1.amazonaws.com/DeleteNurseData', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+  
+      if (!response.ok) throw new Error('Failed to delete nurse');
+
+      setUsers(users.filter(user => user.id !== id));
+      setAlert({ visible: true, message: 'Nurse deleted successfully.', color: 'success' });
+    } catch (error) {
+      console.error('Error deleting nurse:', error);
+      setAlert({ visible: true, message: 'Error deleting nurse from server.', color: 'danger' });
+    }
+  };
 
   const filteredUsers = users.filter(user =>
     Object.values(user).some(value =>
@@ -89,7 +112,7 @@ const NursingList = () => {
               <NurseTableComponent 
                 users={filteredUsers} 
                 handleEditClick={handleEditClick} 
-                handleDeleteClick={() => {}} 
+                handleDeleteClick={handleDeleteClick}
                 isLoading={isLoading} 
               />
             )

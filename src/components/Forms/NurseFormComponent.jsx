@@ -1,3 +1,4 @@
+import React from 'react';
 import { CForm, CFormInput, CFormSelect, CButton, CRow, CCol } from '@coreui/react';
 
 const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCancel }) => {
@@ -13,7 +14,7 @@ const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCanc
             type='text'
             name='givenName'
             placeholder='Given Name'
-            value={user.givenName}
+            value={user.givenName || ''}
             onChange={handleInputChange}
             required
           />
@@ -23,7 +24,7 @@ const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCanc
             type='text'
             name='familyName'
             placeholder='Family Name'
-            value={user.familyName}
+            value={user.familyName || ''}
             onChange={handleInputChange}
             required
           />
@@ -33,7 +34,7 @@ const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCanc
             type='text'
             name='phone'
             placeholder='Phone'
-            value={user.phone}
+            value={user.phone || ''}
             onChange={handleInputChange}
             required
           />
@@ -43,7 +44,7 @@ const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCanc
             type='email'
             name='email'
             placeholder='Email'
-            value={user.email}
+            value={user.email || ''}
             onChange={handleInputChange}
             required
           />
@@ -51,7 +52,7 @@ const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCanc
         <CCol md="2">
           <CFormSelect
             name="status"
-            value={user.status}
+            value={user.status || ''}
             onChange={handleInputChange}
             required
           >

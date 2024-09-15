@@ -14,30 +14,38 @@ const AddNurse = ({ setUsers }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [alert, setAlert] = useState({ visible: false, message: '', color: '' });
 
+  // Function to format date as yyyy/mm/dd
+  const formatDateTime = (date) => {
+    try {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}/${month}/${day}`;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      const fallbackDate = new Date();
+      return `${fallbackDate.getFullYear()}/${String(fallbackDate.getMonth() + 1).padStart(2, '0')}/${String(fallbackDate.getDate()).padStart(2, '0')}`;
+    }
+  };
+
+  // Handle adding a new user
   const handleAddUser = async (e) => {
     e.preventDefault();
-
 
     if (!newUser.givenName || !newUser.familyName || !newUser.phone || !newUser.email || !newUser.status) {
       setAlert({ visible: true, message: 'Please fill in all fields.', color: 'danger' });
       return;
     }
 
-    const formatDateTime = (date) => {
-      return new Date(date).toLocaleString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-      });
-    };
-
+    const currentDate = new Date();
+    
     const newUserWithDates = {
       ...newUser,
-      dateCreated: formatDateTime(new Date()),
-      dateLastModified: formatDateTime(new Date()),
-      createdBy: null,
-      lastModifiedBy: null,
+      dateCreated: formatDateTime(currentDate),
+      dateLastModified: formatDateTime(currentDate),
+      createdBy: 'laith',  // Set default value
+      lastModifiedBy: 'laith', // Set default value
     };
 
     try {
@@ -48,15 +56,7 @@ const AddNurse = ({ setUsers }) => {
         },
         body: JSON.stringify(newUserWithDates),
       });
-  
-  
-      console.log('Response status:', response.status);
-      console.log('Response body:', await response.text());
-  
 
-      console.log('Response status:', response.status);
-      console.log('Response body:', await response.text());
-  
       if (!response.ok) {
         const responseBody = await response.text();
         throw new Error(`Network response was not ok: ${responseBody}`);
@@ -90,11 +90,11 @@ const AddNurse = ({ setUsers }) => {
       setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
     } catch (error) {
       console.error('Error adding user:', error);
-      setAlert({ visible: true, message: 'Error adding user. Check console for details.', color: 'danger' });
+      setAlert({ visible: true, message: 'Error adding user', color: 'danger' });
     }
   };
-  
 
+  // Handle cancel edit
   const handleCancelEdit = () => {
     setIsEditing(false);
   };
