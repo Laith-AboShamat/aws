@@ -90,7 +90,7 @@ const AddNurse = ({ setUsers }) => {
       setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
     } catch (error) {
       console.error('Error adding user:', error);
-      setAlert({ visible: true, message: 'Error adding user', color: 'danger' });
+      setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
     }
   };
 

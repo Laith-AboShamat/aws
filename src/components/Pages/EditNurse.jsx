@@ -13,33 +13,35 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-  
-    // Validate required fields
+    
+    // Validation: Ensure all required fields are filled
     if (!editedUser.givenName || !editedUser.familyName || !editedUser.phone || !editedUser.email || !editedUser.status) {
       setAlert({ visible: true, message: 'Please fill in all required fields.', color: 'danger' });
       return;
     }
   
-    // Format dates and prepare updated user data
+    // Format date to 'YYYY-MM-DD'
     const formatDateTime = (date) => {
       try {
-        const formattedDate = new Date(date).toLocaleDateString('en-CA'); // Format as yyyy-mm-dd
+        const formattedDate = new Date(date).toLocaleDateString('en-CA');
         return formattedDate;
       } catch (error) {
         console.error('Error formatting date:', error);
-        return new Date().toLocaleDateString('en-CA'); // Fallback to current date
+        return new Date().toLocaleDateString('en-CA');
       }
     };
   
+    // Prepare updated user data
     const updatedUser = {
       ...editedUser,
-      dateLastModified: formatDateTime(new Date()),
-      lastModifiedBy: "laith",  // Set to the current user's name or ID
-      createdBy: editedUser.createdBy || "laith",  // Default to "laith" if not present
-      dateCreated: editedUser.dateCreated,
+      DateLastModified: formatDateTime(new Date()),  // Update with current date
+      LastModifiedBy: "laith",                      // Ensure 'LastModifiedBy' is set to 'laith'
+      CreatedBy: editedUser.createdBy || "laith",   // Set 'CreatedBy' to 'laith' if null
+      DateCreated: editedUser.dateCreated,          // Retain the original 'DateCreated'
     };
   
     try {
+      // Make PUT request to update the user
       const response = await fetch('https://djnh3nx6uf.execute-api.eu-north-1.amazonaws.com/UpdateNurseData', {
         method: 'PUT',
         headers: {
@@ -52,13 +54,22 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
         throw new Error('Network response was not ok');
       }
   
+      // Get updated data from response
       const data = await response.json();
-      const updatedUserData = {
-        ...data,
-        dateLastModified: formatDateTime(data.dateLastModified),
-      };
+      
+      // Refresh users list with updated data
+      setUsers(prevUsers => prevUsers.map(u => (u.id === user.id ? {
+        ...u,
+        givenName: data.GivenName,
+        familyName: data.FamilyName,
+        phone: data.Phone,
+        email: data.Email,
+        status: data.Status,
+        lastModifiedBy: "laith",
+        dateLastModified: formatDateTime(new Date()),
+      } : u)));
   
-      setUsers(prevUsers => prevUsers.map(u => (u.id === user.id ? updatedUserData : u)));
+      // Show success alert and close the edit form
       setAlert({ visible: true, message: 'User updated successfully!', color: 'success' });
       handleCancel();
     } catch (error) {
@@ -66,6 +77,7 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
       setAlert({ visible: true, message: 'Error updating user on server.', color: 'danger' });
     }
   };
+  
 
   return (
     <div className='edit-nurse-wrapper'>
