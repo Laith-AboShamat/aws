@@ -8,10 +8,10 @@ import '@coreui/coreui/dist/css/coreui.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Sidebar from './components/Layout/SideBar';
-import NursingList from './components/NursingTable/NursingList';
-import Scheduler from './components/Layout/Scheduler';
+import NursingList from './components/Pages/NursingList';
+import Scheduler from './components/Pages/Scheduler';
 import Header from './components/Layout/Header';
-import AddNurse from './components/Layout/AddNurse';
+import AddNurse from './components/Pages/AddNurse';
 
 Amplify.configure(awsconfig);
 
@@ -24,12 +24,12 @@ function App() {
         <div className="app-container">
           <Sidebar setActiveSection={setActiveSection} signOut={signOut} />
 
-          <div className="content">
+          <div className="main-content">
             <Header />
-            
+
             {activeSection === 'nursingList' && <NursingList />}
             {activeSection === 'scheduler' && <Scheduler />}
-            {activeSection === 'addNurse' && <AddNurse />} {/* Render AddNurse component */}
+            {activeSection === 'addNurse' && <AddNurse />}
           </div>
         </div>
       )}

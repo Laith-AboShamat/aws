@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
-import NurseFormComponent from '../NursingTable/NurseFormComponent';
-import AlertComponent from '../NursingTable/AlertComponent';
+import NurseFormComponent from '../Forms/NurseFormComponent';
+import AlertComponent from '../Tables/AlertComponent';
 
 const AddNurse = ({ setUsers }) => {
   const [newUser, setNewUser] = useState({

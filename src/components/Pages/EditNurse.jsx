@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
-import NurseFormComponent from './NurseFormComponent'; // Adjust the import if needed
-import AlertComponent from './AlertComponent';
+import NurseFormComponent from '../Forms/NurseFormComponent'; // Adjust the import if needed
+import AlertComponent from '../Tables/AlertComponent';
 
 const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
   const [editedUser, setEditedUser] = useState(user);
@@ -34,7 +34,7 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
     };
 
     try {
-      const response = await fetch(`https://iswtf9imy1.execute-api.eu-north-1.amazonaws.com/UpdateNurseData/${user.id}`, {
+      const response = await fetch('https://djnh3nx6uf.execute-api.eu-north-1.amazonaws.com/UpdateNurseData', { // Removed extra quotes
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

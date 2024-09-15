@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
-import AlertComponent from './AlertComponent';
-import SearchComponent from './SearchComponent';
-import NurseTableComponent from './NurseTableComponent';
-import AddNurse from '../Layout/AddNurse';
+import AlertComponent from '../Tables/AlertComponent';
+import SearchComponent from '../Tables/SearchComponent';
+import NurseTableComponent from '../Tables/NurseTableComponent';
+import AddNurse from './AddNurse';
 import EditNurse from './EditNurse';
 import DotLoader from 'react-spinners/DotLoader';
 

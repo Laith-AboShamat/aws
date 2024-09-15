@@ -6,7 +6,7 @@ import nurseImage from '../../assets/nurse.jpg';
 
 const Sidebar = ({ setActiveSection, signOut }) => {
   return (
-    <CSidebar className="border-end sidebar-full-height" unfoldable>
+    <CSidebar className="sidebar-full-height border-end">
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand>
           <img src={nurseImage} alt="Nurse" style={{ height: '40px', width: 'auto' }} />

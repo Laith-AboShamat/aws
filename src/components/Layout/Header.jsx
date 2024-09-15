@@ -7,7 +7,7 @@ import Sidebar from './SideBar'
 
 const Header = () => {
   return (
-    <CHeader position="sticky" className="" style={{ marginLeft: '80px' }}>
+    <CHeader position="sticky">
       <CHeaderNav className="d-md-down-none me-auto align-items-center">
         <CNavItem>
           <CNavLink href="#">Settings</CNavLink>
