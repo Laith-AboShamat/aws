@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
 import NurseFormComponent from '../Forms/NurseFormComponent';
 import AlertComponent from '../Tables/AlertComponent';
+import fetchData from '../../utils/fetchData';
 
 const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
   const [editedUser, setEditedUser] = useState(user);
@@ -62,17 +63,9 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
       // Get updated data from response
       const data = await response.json();
       
-      // Refresh users list with updated data
-      setUsers(prevUsers => prevUsers.map(u => (u.id === user.id ? {
-        ...u,
-        GivenName: data.updated_attributes.GivenName,
-        FamilyName: data.updated_attributes.FamilyName,
-        Phone: data.updated_attributes.Phone,
-        Email: data.updated_attributes.Email,
-        Status: data.updated_attributes.Status,
-        LastModifiedBy: "laith",
-        DateLastModified: formatDateTime(new Date()),
-      } : u)));
+      // Refresh users list by fetching all users again
+      const newUserList = await fetchData();
+      setUsers(newUserList);
   
       // Show success alert and close the edit form
       setAlert({ visible: true, message: 'User updated successfully!', color: 'success' });
@@ -82,8 +75,6 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
       setAlert({ visible: true, message: 'Error updating user on server.', color: 'danger' });
     }
   };
-
-  
 
   return (
     <div className='edit-nurse-wrapper'>

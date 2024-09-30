@@ -6,6 +6,7 @@ import NurseTableComponent from '../Tables/NurseTableComponent';
 import AddNurse from './AddNurse';
 import EditNurse from './EditNurse';
 import DotLoader from 'react-spinners/DotLoader';
+import fetchData from '../../utils/fetchData'; // Import the new fetchData function
 
 const NursingList = () => {
   const [search, setSearch] = useState('');
@@ -15,40 +16,14 @@ const NursingList = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Function to fetch data from the API
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('https://b6yxpbgn7k.execute-api.eu-north-1.amazonaws.com/GetNurseData');
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-
-      // Map the data to the expected format
-      const mappedData = data.map(user => ({
-        id: user.id,
-        givenName: user.GivenName,
-        familyName: user.FamilyName,
-        phone: user.Phone,
-        email: user.Email,
-        status: user.Status,
-        createdBy: user.CreatedBy,
-        dateCreated: user.DateCreated,
-        lastModifiedBy: user.LastModifiedBy,
-        dateLastModified: user.DateLastModified,
-      }));
-
-      setUsers(mappedData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setAlert({ visible: true, message: 'Error fetching data from server.', color: 'danger' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Fetch data when the component mounts
   useEffect(() => {
-    fetchData();
+    const loadData = async () => {
+      const data = await fetchData();
+      setUsers(data);
+      setIsLoading(false);
+    };
+    loadData();
   }, []);
 
   const handleDeleteClick = async (id) => {
@@ -88,9 +63,10 @@ const NursingList = () => {
     setSelectedUser(null);
   };
 
-  const handleUpdateSuccess = () => {
+  const handleUpdateSuccess = async () => {
+    const data = await fetchData(); // Fetch updated data after editing
+    setUsers(data); // Update users state
     setIsEditing(false);
-    fetchData(); // Refresh the table after update
   };
 
   return (
