@@ -31,13 +31,18 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
       }
     };
   
-    // Prepare updated user data
+    // Prepare updated user data with proper casing for the keys
     const updatedUser = {
-      ...editedUser,
+      id: editedUser.id,  // Make sure to include the 'id' for the update
+      GivenName: editedUser.givenName,
+      FamilyName: editedUser.familyName,
+      Phone: editedUser.phone,
+      Email: editedUser.email,
+      Status: editedUser.status,
+      LastModifiedBy: "laith",  // Ensure 'LastModifiedBy' is set to 'laith'
       DateLastModified: formatDateTime(new Date()),  // Update with current date
-      LastModifiedBy: "laith",                      // Ensure 'LastModifiedBy' is set to 'laith'
-      CreatedBy: editedUser.createdBy || "laith",   // Set 'CreatedBy' to 'laith' if null
-      DateCreated: editedUser.dateCreated,          // Retain the original 'DateCreated'
+      CreatedBy: editedUser.createdBy || "laith",  // Set 'CreatedBy' to 'laith' if null
+      DateCreated: editedUser.dateCreated,  // Retain the original 'DateCreated'
     };
   
     try {
@@ -60,13 +65,13 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
       // Refresh users list with updated data
       setUsers(prevUsers => prevUsers.map(u => (u.id === user.id ? {
         ...u,
-        givenName: data.GivenName,
-        familyName: data.FamilyName,
-        phone: data.Phone,
-        email: data.Email,
-        status: data.Status,
-        lastModifiedBy: "laith",
-        dateLastModified: formatDateTime(new Date()),
+        GivenName: data.updated_attributes.GivenName,
+        FamilyName: data.updated_attributes.FamilyName,
+        Phone: data.updated_attributes.Phone,
+        Email: data.updated_attributes.Email,
+        Status: data.updated_attributes.Status,
+        LastModifiedBy: "laith",
+        DateLastModified: formatDateTime(new Date()),
       } : u)));
   
       // Show success alert and close the edit form
@@ -77,6 +82,7 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
       setAlert({ visible: true, message: 'Error updating user on server.', color: 'danger' });
     }
   };
+
   
 
   return (
