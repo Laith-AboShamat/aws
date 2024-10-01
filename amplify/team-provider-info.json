@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-nursing-dev-79c82-authRole",
-      "UnauthRoleArn": "arn:aws:iam::905418132080:role/amplify-nursing-dev-79c82-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::905418132080:role/amplify-nursing-dev-79c82-authRole",
+      "AuthRoleName": "amplify-nursing-dev-7e9c6-authRole",
+      "UnauthRoleArn": "arn:aws:iam::905418132080:role/amplify-nursing-dev-7e9c6-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::905418132080:role/amplify-nursing-dev-7e9c6-authRole",
       "Region": "eu-north-1",
-      "DeploymentBucketName": "amplify-nursing-dev-79c82-deployment",
-      "UnauthRoleName": "amplify-nursing-dev-79c82-unauthRole",
-      "StackName": "amplify-nursing-dev-79c82",
-      "StackId": "arn:aws:cloudformation:eu-north-1:905418132080:stack/amplify-nursing-dev-79c82/f09e72f0-63ae-11ef-ba28-0e59fe177c7d",
-      "AmplifyAppId": "d1thlwq3s68c8v"
+      "DeploymentBucketName": "amplify-nursing-dev-7e9c6-deployment",
+      "UnauthRoleName": "amplify-nursing-dev-7e9c6-unauthRole",
+      "StackName": "amplify-nursing-dev-7e9c6",
+      "StackId": "arn:aws:cloudformation:eu-north-1:905418132080:stack/amplify-nursing-dev-7e9c6/257b4bb0-8024-11ef-abe5-0a431a41e8e3",
+      "AmplifyAppId": "duh1m4wu60rru"
     },
     "categories": {
       "auth": {
-        "nursing3c09c152": {}
+        "nursingb73de511": {}
       }
     }
   }

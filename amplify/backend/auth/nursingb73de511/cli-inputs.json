@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "nursing3c09c152_identitypool_3c09c152",
+    "identityPoolName": "nursingb73de511_identitypool_b73de511",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "nursin3c09c152",
-    "userPoolName": "nursing3c09c152_userpool_3c09c152",
+    "resourceNameTruncated": "nursinb73de511",
+    "userPoolName": "nursingb73de511_userpool_b73de511",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,10 +31,10 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "nursin3c09c152_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "nursinb73de511_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "3c09c152",
-    "resourceName": "nursing3c09c152",
+    "sharedId": "b73de511",
+    "resourceName": "nursingb73de511",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "userPoolGroupList": [],
