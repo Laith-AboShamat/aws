@@ -14,12 +14,12 @@ const AddNurse = ({ setUsers }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [alert, setAlert] = useState({ visible: false, message: '', color: '' });
 
-  // Function to format date as yyyy/mm/dd
+
   const formatDateTime = (date) => {
     try {
       const d = new Date(date);
       const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+      const month = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
       return `${year}/${month}/${day}`;
     } catch (error) {
@@ -29,7 +29,7 @@ const AddNurse = ({ setUsers }) => {
     }
   };
 
-  // Handle adding a new user
+
   const handleAddUser = async (e) => {
     e.preventDefault();
 
@@ -44,8 +44,8 @@ const AddNurse = ({ setUsers }) => {
       ...newUser,
       dateCreated: formatDateTime(currentDate),
       dateLastModified: formatDateTime(currentDate),
-      createdBy: 'laith',  // Set default value
-      lastModifiedBy: 'laith', // Set default value
+      createdBy: 'laith',
+      lastModifiedBy: '',
     };
 
     try {
@@ -94,7 +94,7 @@ const AddNurse = ({ setUsers }) => {
     }
   };
 
-  // Handle cancel edit
+
   const handleCancelEdit = () => {
     setIsEditing(false);
   };

@@ -15,13 +15,11 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
   const handleSave = async (e) => {
     e.preventDefault();
     
-    // Validation: Ensure all required fields are filled
     if (!editedUser.givenName || !editedUser.familyName || !editedUser.phone || !editedUser.email || !editedUser.status) {
       setAlert({ visible: true, message: 'Please fill in all required fields.', color: 'danger' });
       return;
     }
   
-    // Format date to 'YYYY-MM-DD'
     const formatDateTime = (date) => {
       try {
         const formattedDate = new Date(date).toLocaleDateString('en-CA');
@@ -31,23 +29,21 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
         return new Date().toLocaleDateString('en-CA');
       }
     };
-  
-    // Prepare updated user data with proper casing for the keys
+
     const updatedUser = {
-      id: editedUser.id,  // Make sure to include the 'id' for the update
+      id: editedUser.id,  
       GivenName: editedUser.givenName,
       FamilyName: editedUser.familyName,
       Phone: editedUser.phone,
       Email: editedUser.email,
       Status: editedUser.status,
-      LastModifiedBy: "laith",  // Ensure 'LastModifiedBy' is set to 'laith'
-      DateLastModified: formatDateTime(new Date()),  // Update with current date
-      CreatedBy: editedUser.createdBy || "laith",  // Set 'CreatedBy' to 'laith' if null
-      DateCreated: editedUser.dateCreated,  // Retain the original 'DateCreated'
+      LastModifiedBy: "laith",
+      DateLastModified: formatDateTime(new Date()),
+      CreatedBy: editedUser.createdBy || "laith",
+      DateCreated: editedUser.dateCreated,
     };
   
     try {
-      // Make PUT request to update the user
       const response = await fetch('https://djnh3nx6uf.execute-api.eu-north-1.amazonaws.com/UpdateNurseData', {
         method: 'PUT',
         headers: {
@@ -60,14 +56,12 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel }) => {
         throw new Error('Network response was not ok');
       }
   
-      // Get updated data from response
       const data = await response.json();
-      
-      // Refresh users list by fetching all users again
+
       const newUserList = await fetchData();
       setUsers(newUserList);
   
-      // Show success alert and close the edit form
+
       setAlert({ visible: true, message: 'User updated successfully!', color: 'success' });
       handleCancel();
     } catch (error) {
