@@ -45,7 +45,7 @@ const NurseTableComponent = ({ users, handleEditClick, handleDeleteClick, isLoad
                     <CTableDataCell style={cellStyle}>{user.dateCreated}</CTableDataCell>
                     <CTableDataCell style={cellStyle}>{user.lastModifiedBy}</CTableDataCell>
                     <CTableDataCell style={cellStyle}>{user.dateLastModified}</CTableDataCell>
-                    <CTableDataCell style={{ ...cellStyle, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <CTableDataCell style={{ ...cellStyle, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                       <CButton color="warning" onClick={() => handleEditClick(user)}>
                         Edit
                       </CButton>

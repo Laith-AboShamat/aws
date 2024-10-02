@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CCard, CCardBody, CCardHeader } from '@coreui/react';
+import { CCard, CCardBody, CCardHeader, CButton, CModal, CModalHeader, CModalBody, CModalFooter } from '@coreui/react';
 import AlertComponent from '../Tables/AlertComponent';
 import SearchComponent from '../Tables/SearchComponent';
 import NurseTableComponent from '../Tables/NurseTableComponent';
@@ -16,6 +16,9 @@ const NursingList = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
+  const [deleteUserId, setDeleteUserId] = useState(null); // Track the user to be deleted
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Modal visibility state
+
   // Fetch data when the component mounts
   useEffect(() => {
     const loadData = async () => {
@@ -26,24 +29,31 @@ const NursingList = () => {
     loadData();
   }, []);
 
-  const handleDeleteClick = async (id) => {
-    const isConfirmed = window.confirm('Are you sure you want to delete this nurse?');
-    if (!isConfirmed) return;
+  // Handle showing the delete confirmation modal
+  const handleDeleteClick = (id) => {
+    setDeleteUserId(id);
+    setShowDeleteModal(true); // Open modal
+  };
 
+  // Handle deletion confirmed in the modal
+  const confirmDelete = async () => {
     try {
       const response = await fetch('https://7krr77tjrd.execute-api.eu-north-1.amazonaws.com/DeleteNurseData', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
+        body: JSON.stringify({ id: deleteUserId })
       });
   
       if (!response.ok) throw new Error('Failed to delete nurse');
 
-      setUsers(users.filter(user => user.id !== id));
+      setUsers(users.filter(user => user.id !== deleteUserId));
       setAlert({ visible: true, message: 'Nurse deleted successfully.', color: 'success' });
     } catch (error) {
       console.error('Error deleting nurse:', error);
       setAlert({ visible: true, message: 'Error deleting nurse from server.', color: 'danger' });
+    } finally {
+      setShowDeleteModal(false); // Close modal after delete
+      setDeleteUserId(null); // Clear the selected ID
     }
   };
 
@@ -101,6 +111,28 @@ const NursingList = () => {
               />
             )
           )}
+
+          {/* Delete Confirmation Modal */}
+          <CModal 
+            visible={showDeleteModal} 
+            onClose={() => setShowDeleteModal(false)} 
+            backdrop="static"
+          >
+            <CModalHeader closeButton>
+              Confirm Deletion
+            </CModalHeader>
+            <CModalBody>
+              Are you sure you want to delete this nurse? This action cannot be undone.
+            </CModalBody>
+            <CModalFooter>
+              <CButton color="danger" onClick={confirmDelete}>
+                Delete
+              </CButton>
+              <CButton color="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </CButton>
+            </CModalFooter>
+          </CModal>
         </CCardBody>
       </CCard>
     </div>
