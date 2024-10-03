@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
-import NurseFormComponent from '../Forms/NurseFormComponent';
+import AddNurseForm from '../Forms/AddNurseForm';
 import AlertComponent from '../Tables/AlertComponent';
 
 const AddNurse = ({ setUsers }) => {
@@ -109,7 +109,7 @@ const AddNurse = ({ setUsers }) => {
           {alert.visible && (
             <AlertComponent alert={alert} setAlert={setAlert} />
           )}
-          <NurseFormComponent
+          <AddNurseForm
             user={newUser}
             setUser={setNewUser}
             handleSubmit={handleAddUser}

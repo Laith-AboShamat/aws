@@ -3,10 +3,9 @@ import { CCard, CCardBody, CCardHeader, CButton, CModal, CModalHeader, CModalBod
 import AlertComponent from '../Tables/AlertComponent';
 import SearchComponent from '../Tables/SearchComponent';
 import NurseTableComponent from '../Tables/NurseTableComponent';
-import AddNurse from './AddNurse';
 import EditNurse from './EditNurse';
 import DotLoader from 'react-spinners/DotLoader';
-import fetchData from '../../utils/fetchData'; // Import the new fetchData function
+import fetchData from '../../utils/fetchData';
 
 const NursingList = () => {
   const [search, setSearch] = useState('');
@@ -14,10 +13,10 @@ const NursingList = () => {
   const [alert, setAlert] = useState({ visible: false, message: '', color: '' });
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
 
-  const [deleteUserId, setDeleteUserId] = useState(null); // Track the user to be deleted
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // Modal visibility state
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Fetch data when the component mounts
   useEffect(() => {
@@ -32,7 +31,7 @@ const NursingList = () => {
   // Handle showing the delete confirmation modal
   const handleDeleteClick = (id) => {
     setDeleteUserId(id);
-    setShowDeleteModal(true); // Open modal
+    setShowDeleteModal(true); // Open delete modal
   };
 
   // Handle deletion confirmed in the modal
@@ -43,7 +42,7 @@ const NursingList = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: deleteUserId })
       });
-  
+
       if (!response.ok) throw new Error('Failed to delete nurse');
 
       setUsers(users.filter(user => user.id !== deleteUserId));
@@ -53,7 +52,7 @@ const NursingList = () => {
       setAlert({ visible: true, message: 'Error deleting nurse from server.', color: 'danger' });
     } finally {
       setShowDeleteModal(false); // Close modal after delete
-      setDeleteUserId(null); // Clear the selected ID
+      setDeleteUserId(null); // Clear selected ID
     }
   };
 
@@ -65,18 +64,18 @@ const NursingList = () => {
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
-    setIsEditing(true);
+    setEditModalVisible(true); // Open edit modal
   };
 
   const handleCancelEdit = () => {
-    setIsEditing(false);
     setSelectedUser(null);
+    setEditModalVisible(false); // Close edit modal
   };
 
   const handleUpdateSuccess = async () => {
     const data = await fetchData(); // Fetch updated data after editing
     setUsers(data); // Update users state
-    setIsEditing(false);
+    setEditModalVisible(false); // Close modal after update
   };
 
   return (
@@ -89,27 +88,17 @@ const NursingList = () => {
           <AlertComponent alert={alert} setAlert={setAlert} />
           <SearchComponent search={search} setSearch={setSearch} />
 
-          {isEditing ? (
-            <EditNurse 
-              user={selectedUser} 
-              setUsers={setUsers} 
-              setAlert={setAlert} 
-              handleCancel={handleCancelEdit} 
-              onSuccess={handleUpdateSuccess} // Refreshes after successful update
-            />
+          {isLoading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+              <DotLoader color="#36D7B7" />
+            </div>
           ) : (
-            isLoading ? (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
-                <DotLoader color="#36D7B7" />
-              </div>
-            ) : (
-              <NurseTableComponent 
-                users={filteredUsers} 
-                handleEditClick={handleEditClick} 
-                handleDeleteClick={handleDeleteClick}
-                isLoading={isLoading} 
-              />
-            )
+            <NurseTableComponent 
+              users={filteredUsers} 
+              handleEditClick={handleEditClick} 
+              handleDeleteClick={handleDeleteClick}
+              isLoading={isLoading} 
+            />
           )}
 
           {/* Delete Confirmation Modal */}
@@ -133,6 +122,18 @@ const NursingList = () => {
               </CButton>
             </CModalFooter>
           </CModal>
+
+          {/* Edit Nurse Modal */}
+          <EditNurse 
+            user={selectedUser} 
+            setUsers={setUsers} 
+            setAlert={setAlert} 
+            handleCancel={handleCancelEdit} 
+            onSuccess={handleUpdateSuccess} 
+            modalVisible={editModalVisible} 
+            setModalVisible={setEditModalVisible} 
+          />
+
         </CCardBody>
       </CCard>
     </div>

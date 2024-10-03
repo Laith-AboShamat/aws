@@ -1,7 +1,7 @@
 import React from 'react';
 import { CForm, CFormInput, CFormSelect, CButton, CRow, CCol } from '@coreui/react';
 
-const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCancel }) => {
+const EditNurseForm = ({ user, setUser, handleSubmit, handleCancel }) => {
   const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -61,17 +61,9 @@ const NurseFormComponent = ({ user, setUser, handleSubmit, isEditing, handleCanc
             <option value="inactive">Inactive</option>
           </CFormSelect>
         </CCol>
-        <CCol md="2">
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <CButton type='submit' color={isEditing ? 'success' : 'primary'}>
-              {isEditing ? 'Update User' : 'Add User'}
-            </CButton>
-            {isEditing && <CButton color='secondary' onClick={handleCancel}>Cancel</CButton>}
-          </div>
-        </CCol>
       </CRow>
     </CForm>
   );
 };
 
-export default NurseFormComponent;
+export default EditNurseForm;
