@@ -2,7 +2,7 @@ import React from 'react';
 import { CSidebar, CSidebarHeader, CSidebarBrand, CSidebarNav, CNavTitle, CNavItem, CNavGroup, CBadge, CButton } from '@coreui/react';
 import { CIcon } from '@coreui/icons-react';
 import { cilPuzzle, cilContact, cilCalendar, cilSettings, cilHome, cilAccountLogout, cilPlus } from '@coreui/icons'; // Import the plus icon
-import nurseImage from '../../assets/nurse.jpg';
+import nurseImage from '../assets/nurse.jpg';
 
 const Sidebar = ({ setActiveSection, signOut }) => {
   return (

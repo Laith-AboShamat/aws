@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CModal, CModalHeader, CModalBody, CModalFooter, CButton } from '@coreui/react';
-import EditNurseForm from '../Forms/EditNurseForm';
-import AlertComponent from '../Tables/AlertComponent';
-import fetchData from '../../utils/fetchData';
+import EditNurseForm from '../components/Forms/EditNurseForm';
+import AlertComponent from '../components/Tables/AlertComponent';
+import fetchData from '../utils/fetchData';
 
 const EditNurse = ({ user, setUsers, setAlert, handleCancel, modalVisible, setModalVisible }) => {
   const [editedUser, setEditedUser] = useState(user);

@@ -2,7 +2,7 @@ import React from 'react'
 import { CHeader, CHeaderNav, CNavItem, CNavLink, CAvatar, CBadge } from '@coreui/react'
 import { CIcon } from '@coreui/icons-react'
 import { cilBell } from '@coreui/icons'
-import avatar from '../../assets/avatar.png'
+import avatar from '../assets/avatar.png'
 import Sidebar from './SideBar'
 
 const Header = () => {

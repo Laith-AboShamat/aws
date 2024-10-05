@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { CCard, CCardBody, CCardHeader, CButton, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react';
-import AlertComponent from '../Tables/AlertComponent';
-import SearchComponent from '../Tables/SearchComponent';
-import NurseTableComponent from '../Tables/NurseTableComponent';
+import AlertComponent from '../components/Tables/AlertComponent';
+import SearchComponent from '../components/Tables/SearchComponent';
+import NurseTableComponent from '../components/Tables/NurseTableComponent';
 import EditNurse from './EditNurse';
 import AddNurse from './AddNurse';
 import DotLoader from 'react-spinners/DotLoader';
-import fetchData from '../../utils/fetchData';
+import fetchData from '../utils/fetchData';
 
 const NursingList = () => {
   const [search, setSearch] = useState('');
