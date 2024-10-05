@@ -27,12 +27,6 @@ const Sidebar = ({ setActiveSection, signOut }) => {
           Nursing List
           <CBadge color="primary ms-auto">NEW</CBadge>
         </CNavItem>
-
-        <CNavItem href="#" onClick={() => setActiveSection('addNurse')}>
-          <CIcon customClassName="nav-icon" icon={cilPlus} />
-          Add Nurse
-          <CBadge color="primary ms-auto">NEW</CBadge>
-        </CNavItem>
         
         <CNavItem href="#" onClick={() => setActiveSection('scheduler')}>
           <CIcon customClassName="nav-icon" icon={cilCalendar} /> 

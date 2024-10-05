@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { CCard, CCardBody, CCardHeader, CButton, CModal, CModalHeader, CModalBody, CModalFooter } from '@coreui/react';
+import { CCard, CCardBody, CCardHeader, CButton, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react';
 import AlertComponent from '../Tables/AlertComponent';
 import SearchComponent from '../Tables/SearchComponent';
 import NurseTableComponent from '../Tables/NurseTableComponent';
 import EditNurse from './EditNurse';
+import AddNurse from './AddNurse'; // Importing AddNurse
 import DotLoader from 'react-spinners/DotLoader';
 import fetchData from '../../utils/fetchData';
 
@@ -14,15 +15,27 @@ const NursingList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
-
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [addNurseVisible, setAddNurseVisible] = useState(false); // State for Add Nurse modal visibility
+  const [lastModifiedDate, setLastModifiedDate] = useState(new Date().toLocaleDateString()); // Initialize with today's date
 
   // Fetch data when the component mounts
   useEffect(() => {
     const loadData = async () => {
       const data = await fetchData();
       setUsers(data);
+
+      // Update lastModifiedDate based on fetched data
+      if (data.length) {
+        const lastDate = Math.max(...data.map(user => new Date(user.DateLastModified)));
+        if (!isNaN(lastDate)) {
+          setLastModifiedDate(new Date(lastDate).toLocaleDateString());
+        } else {
+          // In case of invalid date values, keep today's date
+          setLastModifiedDate(new Date().toLocaleDateString());
+        }
+      }
       setIsLoading(false);
     };
     loadData();
@@ -75,8 +88,22 @@ const NursingList = () => {
   const handleUpdateSuccess = async () => {
     const data = await fetchData(); // Fetch updated data after editing
     setUsers(data); // Update users state
+
+    // Update lastModifiedDate after editing
+    if (data.length) {
+      const lastDate = Math.max(...data.map(user => new Date(user.DateLastModified)));
+      if (!isNaN(lastDate)) {
+        setLastModifiedDate(new Date(lastDate).toLocaleDateString());
+      } else {
+        // In case of invalid date values, keep today's date
+        setLastModifiedDate(new Date().toLocaleDateString());
+      }
+    }
+
     setEditModalVisible(false); // Close modal after update
   };
+
+  const numberOfRecords = users.length;
 
   return (
     <div className='nursing-list-wrapper'>
@@ -100,6 +127,13 @@ const NursingList = () => {
               isLoading={isLoading} 
             />
           )}
+
+          {/* Additional Info and Button at the Bottom */}
+          <div style={{ borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '20px' }}>
+            <CButton color="primary" onClick={() => setAddNurseVisible(true)}>Add Nurse</CButton> {/* Button to add nurse */}
+            <span style={{ marginLeft: '40px', marginRight: '40px'}}>Last Modified: {lastModifiedDate}</span>
+            <span style={{ marginLeft: '20px' }}>Total Records: {numberOfRecords}</span>
+          </div>
 
           {/* Delete Confirmation Modal */}
           <CModal 
@@ -134,6 +168,27 @@ const NursingList = () => {
             setModalVisible={setEditModalVisible} 
           />
 
+          {/* Add Nurse Modal */}
+          <CModal 
+            visible={addNurseVisible} 
+            onClose={() => setAddNurseVisible(false)} 
+            backdrop="static"
+            size='xl'
+            alignment="center"
+          >
+            <CModalHeader closeButton>
+              <h2>Add Nurse</h2> 
+            </CModalHeader>
+            <CModalBody>
+              <AddNurse setUsers={setUsers} setAlert={setAlert} />
+            </CModalBody>
+            <CModalFooter>
+              <CButton color="secondary" onClick={() => setAddNurseVisible(false)}>
+                Close
+              </CButton>
+            </CModalFooter>
+          </CModal>
+          
         </CCardBody>
       </CCard>
     </div>

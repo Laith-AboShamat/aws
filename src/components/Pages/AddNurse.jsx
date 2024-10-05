@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
 import AddNurseForm from '../Forms/AddNurseForm';
 import AlertComponent from '../Tables/AlertComponent';
+import fetchData from '../../utils/fetchData'; // Import the fetchData function
 
 const AddNurse = ({ setUsers }) => {
   const [newUser, setNewUser] = useState({
@@ -13,7 +14,6 @@ const AddNurse = ({ setUsers }) => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [alert, setAlert] = useState({ visible: false, message: '', color: '' });
-
 
   const formatDateTime = (date) => {
     try {
@@ -28,7 +28,6 @@ const AddNurse = ({ setUsers }) => {
       return `${fallbackDate.getFullYear()}/${String(fallbackDate.getMonth() + 1).padStart(2, '0')}/${String(fallbackDate.getDate()).padStart(2, '0')}`;
     }
   };
-
 
   const handleAddUser = async (e) => {
     e.preventDefault();
@@ -77,7 +76,9 @@ const AddNurse = ({ setUsers }) => {
         dateLastModified: formatDateTime(data.dateLastModified || newUser.dateLastModified),
       };
 
-      setUsers(prevUsers => [...prevUsers, newNurse]);
+      // Fetch the updated user list after successfully adding a new user
+      const newUserList = await fetchData();
+      setUsers(newUserList); // Update the users state with the fetched data
 
       setNewUser({
         givenName: '',
@@ -90,10 +91,9 @@ const AddNurse = ({ setUsers }) => {
       setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
     } catch (error) {
       console.error('Error adding user:', error);
-      setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
+      setAlert({ visible: true, message: 'Error adding user.', color: 'danger' });
     }
   };
-
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -101,23 +101,16 @@ const AddNurse = ({ setUsers }) => {
 
   return (
     <div className='add-nurse-wrapper'>
-      <CCard className='rounded-card'>
-        <CCardHeader>
-          <h2 className='pad'>Add Nurse</h2>
-        </CCardHeader>
-        <CCardBody>
-          {alert.visible && (
-            <AlertComponent alert={alert} setAlert={setAlert} />
-          )}
-          <AddNurseForm
-            user={newUser}
-            setUser={setNewUser}
-            handleSubmit={handleAddUser}
-            isEditing={isEditing}
-            handleCancel={handleCancelEdit}
-          />
-        </CCardBody>
-      </CCard>
+      {alert.visible && (
+        <AlertComponent alert={alert} setAlert={setAlert} />
+      )}
+      <AddNurseForm
+        user={newUser}
+        setUser={setNewUser}
+        handleSubmit={handleAddUser}
+        isEditing={isEditing}
+        handleCancel={handleCancelEdit}
+      />
     </div>
   );
 };

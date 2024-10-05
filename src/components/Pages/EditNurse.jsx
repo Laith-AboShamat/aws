@@ -59,6 +59,7 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel, modalVisible, setMo
       visible={modalVisible} 
       onClose={() => setModalVisible(false)}
       alignment="center"
+      backdrop="static"
       >
       <CModalHeader closeButton>
         <h2>Edit Nurse</h2>
