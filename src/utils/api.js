@@ -21,25 +21,25 @@ const fetchFromAPI = async (endpoint, method = 'GET', body = null) => {
     return response;
 };
 
-// Function to fetch all nurses
+// Fetch all nurses
 export const fetchNurses = async () => {
     const response = await fetchFromAPI('GetNurseData');
     return response.json();
 };
 
-// Function to create a new user
+// Create a new user
 export const createUser = async (userData) => {
     const response = await fetchFromAPI('CreateNurse', 'POST', userData);
     return response.json();
 };
 
-// Function to update an existing user
+// Update an existing user
 export const updateUser = async (userData) => {
     const response = await fetchFromAPI('UpdateNurse', 'PUT', userData);
     return response.json();
 };
 
-// Function to delete a user
+// Delete a user
 export const deleteNurse = async (userId) => {
     const response = await fetchFromAPI(`DeleteNurse/${userId}`, 'DELETE');
     return response;

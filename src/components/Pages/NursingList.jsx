@@ -4,7 +4,7 @@ import AlertComponent from '../Tables/AlertComponent';
 import SearchComponent from '../Tables/SearchComponent';
 import NurseTableComponent from '../Tables/NurseTableComponent';
 import EditNurse from './EditNurse';
-import AddNurse from './AddNurse'; // Importing AddNurse
+import AddNurse from './AddNurse';
 import DotLoader from 'react-spinners/DotLoader';
 import fetchData from '../../utils/fetchData';
 
@@ -17,22 +17,19 @@ const NursingList = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [addNurseVisible, setAddNurseVisible] = useState(false); // State for Add Nurse modal visibility
-  const [lastModifiedDate, setLastModifiedDate] = useState(new Date().toLocaleDateString()); // Initialize with today's date
+  const [addNurseVisible, setAddNurseVisible] = useState(false);
+  const [lastModifiedDate, setLastModifiedDate] = useState(new Date().toLocaleDateString());
 
-  // Fetch data when the component mounts
   useEffect(() => {
     const loadData = async () => {
       const data = await fetchData();
       setUsers(data);
 
-      // Update lastModifiedDate based on fetched data
       if (data.length) {
         const lastDate = Math.max(...data.map(user => new Date(user.DateLastModified)));
         if (!isNaN(lastDate)) {
           setLastModifiedDate(new Date(lastDate).toLocaleDateString());
         } else {
-          // In case of invalid date values, keep today's date
           setLastModifiedDate(new Date().toLocaleDateString());
         }
       }
@@ -41,13 +38,11 @@ const NursingList = () => {
     loadData();
   }, []);
 
-  // Handle showing the delete confirmation modal
   const handleDeleteClick = (id) => {
     setDeleteUserId(id);
-    setShowDeleteModal(true); // Open delete modal
+    setShowDeleteModal(true);
   };
 
-  // Handle deletion confirmed in the modal
   const confirmDelete = async () => {
     try {
       const response = await fetch('https://7krr77tjrd.execute-api.eu-north-1.amazonaws.com/DeleteNurseData', {
@@ -64,8 +59,8 @@ const NursingList = () => {
       console.error('Error deleting nurse:', error);
       setAlert({ visible: true, message: 'Error deleting nurse from server.', color: 'danger' });
     } finally {
-      setShowDeleteModal(false); // Close modal after delete
-      setDeleteUserId(null); // Clear selected ID
+      setShowDeleteModal(false);
+      setDeleteUserId(null);
     }
   };
 
@@ -77,30 +72,28 @@ const NursingList = () => {
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
-    setEditModalVisible(true); // Open edit modal
+    setEditModalVisible(true);
   };
 
   const handleCancelEdit = () => {
     setSelectedUser(null);
-    setEditModalVisible(false); // Close edit modal
+    setEditModalVisible(false);
   };
 
   const handleUpdateSuccess = async () => {
-    const data = await fetchData(); // Fetch updated data after editing
-    setUsers(data); // Update users state
+    const data = await fetchData();
+    setUsers(data);
 
-    // Update lastModifiedDate after editing
     if (data.length) {
       const lastDate = Math.max(...data.map(user => new Date(user.DateLastModified)));
       if (!isNaN(lastDate)) {
         setLastModifiedDate(new Date(lastDate).toLocaleDateString());
       } else {
-        // In case of invalid date values, keep today's date
         setLastModifiedDate(new Date().toLocaleDateString());
       }
     }
 
-    setEditModalVisible(false); // Close modal after update
+    setEditModalVisible(false);
   };
 
   const numberOfRecords = users.length;
@@ -128,14 +121,12 @@ const NursingList = () => {
             />
           )}
 
-          {/* Additional Info and Button at the Bottom */}
           <div style={{ borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '20px' }}>
-            <CButton color="primary" onClick={() => setAddNurseVisible(true)}>Add Nurse</CButton> {/* Button to add nurse */}
+            <CButton color="primary" onClick={() => setAddNurseVisible(true)}>Add Nurse</CButton>
             <span style={{ marginLeft: '40px', marginRight: '40px'}}>Last Modified: {lastModifiedDate}</span>
             <span style={{ marginLeft: '20px' }}>Total Records: {numberOfRecords}</span>
           </div>
 
-          {/* Delete Confirmation Modal */}
           <CModal 
             visible={showDeleteModal} 
             onClose={() => setShowDeleteModal(false)} 
@@ -157,7 +148,6 @@ const NursingList = () => {
             </CModalFooter>
           </CModal>
 
-          {/* Edit Nurse Modal */}
           <EditNurse 
             user={selectedUser} 
             setUsers={setUsers} 

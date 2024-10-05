@@ -4,7 +4,7 @@ const fetchData = async () => {
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
   
-      // Map the data to the expected format
+
       const mappedData = data.map(user => ({
         id: user.id,
         givenName: user.GivenName,
@@ -21,7 +21,7 @@ const fetchData = async () => {
       return mappedData;
     } catch (error) {
       console.error('Error fetching data:', error);
-      return []; // Return an empty array on error
+      return [];
     }
   };
   

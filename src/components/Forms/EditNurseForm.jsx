@@ -10,15 +10,13 @@ const EditNurseForm = ({ user, setUser, handleSubmit, handleCancel }) => {
 
   const handleFormSubmit = (event) => {
     const form = event.currentTarget;
-    // Check validity
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      // Call handleSubmit only if the form is valid
       handleSubmit(event);
     }
-    setValidated(true); // Show validation messages after submission attempt
+    setValidated(true);
   };
 
   return (

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
 import AddNurseForm from '../Forms/AddNurseForm';
 import AlertComponent from '../Tables/AlertComponent';
-import fetchData from '../../utils/fetchData'; // Import the fetchData function
+import fetchData from '../../utils/fetchData';
 
 const AddNurse = ({ setUsers }) => {
   const [newUser, setNewUser] = useState({
@@ -76,9 +76,8 @@ const AddNurse = ({ setUsers }) => {
         dateLastModified: formatDateTime(data.dateLastModified || newUser.dateLastModified),
       };
 
-      // Fetch the updated user list after successfully adding a new user
       const newUserList = await fetchData();
-      setUsers(newUserList); // Update the users state with the fetched data
+      setUsers(newUserList);
 
       setNewUser({
         givenName: '',
