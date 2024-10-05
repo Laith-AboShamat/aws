@@ -79,14 +79,6 @@ const EditNurseForm = ({ user, setUser, handleSubmit, handleCancel }) => {
           </CFormSelect>
           <CFormFeedback invalid>Please select a status.</CFormFeedback>
         </CCol>
-        <CCol md="2">
-          <CButton type="submit" color="primary">
-            Save Changes
-          </CButton>
-          <CButton type="button" color="secondary" onClick={handleCancel} className="ms-2">
-            Cancel
-          </CButton>
-        </CCol>
       </CRow>
     </CForm>
   );
