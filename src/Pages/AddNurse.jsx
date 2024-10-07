@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
-import { CCard, CCardBody, CCardHeader } from '@coreui/react';
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
+  CButton,
+} from '@coreui/react';
 import AddNurseForm from '../components/Forms/AddNurseForm';
 import AlertComponent from '../components/Tables/AlertComponent';
 import fetchData from '../utils/fetchData';
 
-const AddNurse = ({ setUsers }) => {
+const AddNurse = ({ setUsers, showModal, handleClose }) => {
   const [newUser, setNewUser] = useState({
     givenName: '',
     familyName: '',
@@ -12,7 +22,6 @@ const AddNurse = ({ setUsers }) => {
     email: '',
     status: '',
   });
-  const [isEditing, setIsEditing] = useState(false);
   const [alert, setAlert] = useState({ visible: false, message: '', color: '' });
 
   const formatDateTime = (date) => {
@@ -24,8 +33,7 @@ const AddNurse = ({ setUsers }) => {
       return `${year}/${month}/${day}`;
     } catch (error) {
       console.error('Error formatting date:', error);
-      const fallbackDate = new Date();
-      return `${fallbackDate.getFullYear()}/${String(fallbackDate.getMonth() + 1).padStart(2, '0')}/${String(fallbackDate.getDate()).padStart(2, '0')}`;
+      return new Date().toLocaleDateString();
     }
   };
 
@@ -38,7 +46,6 @@ const AddNurse = ({ setUsers }) => {
     }
 
     const currentDate = new Date();
-    
     const newUserWithDates = {
       ...newUser,
       dateCreated: formatDateTime(currentDate),
@@ -62,7 +69,6 @@ const AddNurse = ({ setUsers }) => {
       }
 
       const data = await response.json();
-
       const newNurse = {
         id: data.id || 'new-id',
         givenName: data.givenName || newUser.givenName,
@@ -94,23 +100,27 @@ const AddNurse = ({ setUsers }) => {
     }
   };
 
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-  };
-
   return (
-    <div className='add-nurse-wrapper'>
-      {alert.visible && (
-        <AlertComponent alert={alert} setAlert={setAlert} />
-      )}
-      <AddNurseForm
-        user={newUser}
-        setUser={setNewUser}
-        handleSubmit={handleAddUser}
-        isEditing={isEditing}
-        handleCancel={handleCancelEdit}
-      />
-    </div>
+    <CModal visible={showModal} onClose={handleClose}>
+      <CModalHeader>
+        <CModalTitle>Add Nurse</CModalTitle>
+      </CModalHeader>
+      <CModalBody>
+        {alert.visible && (
+          <AlertComponent alert={alert} setAlert={setAlert} />
+        )}
+        <AddNurseForm
+          user={newUser}
+          setUser={setNewUser}
+          handleSubmit={handleAddUser}
+        />
+      </CModalBody>
+      <CModalFooter>
+        <CButton color="primary" onClick={handleAddUser}>
+          Add User
+        </CButton>
+      </CModalFooter>
+    </CModal>
   );
 };
 

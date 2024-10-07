@@ -17,7 +17,7 @@ import Home from './Pages/Home';
 Amplify.configure(awsconfig);
 
 function App() {
-  const [activeSection, setActiveSection] = useState('');
+  const [activeSection, setActiveSection] = useState('home');
 
   return (
     <Authenticator>
@@ -30,7 +30,6 @@ function App() {
             {activeSection === 'home' && <Home />}
             {activeSection === 'nursingList' && <NursingList />}
             {activeSection === 'scheduler' && <Scheduler />}
-            {activeSection === 'addNurse' && <AddNurse />}
           </div>
         </div>
       )}

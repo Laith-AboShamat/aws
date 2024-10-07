@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CForm, CFormInput, CFormSelect, CFormLabel, CButton, CFormFeedback, CCol } from '@coreui/react';
 
-const AddNurseForm = ({ user, setUser, handleSubmit }) => {
+const AddNurseForm = ({ user, setUser }) => {
   const [validated, setValidated] = useState(false);
 
   const handleInputChange = (e) => {
@@ -13,8 +13,6 @@ const AddNurseForm = ({ user, setUser, handleSubmit }) => {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-    } else {
-      handleSubmit(event);
     }
     setValidated(true);
   };
@@ -91,12 +89,6 @@ const AddNurseForm = ({ user, setUser, handleSubmit }) => {
           <option value="inactive">Inactive</option>
         </CFormSelect>
         <CFormFeedback invalid>Please select a status.</CFormFeedback>
-      </CCol>
-
-      <CCol md="12">
-        <CButton type="submit" color="primary">
-          Add User
-        </CButton>
       </CCol>
     </CForm>
   );

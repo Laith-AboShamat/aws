@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CCard, CCardBody, CCardHeader, CButton, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react';
+import { CCard, CCardBody, CCardHeader, CButton, CModal, CModalHeader, CModalBody, CModalFooter } from '@coreui/react';
 import AlertComponent from '../components/Tables/AlertComponent';
 import SearchComponent from '../components/Tables/SearchComponent';
 import NurseTableComponent from '../components/Tables/NurseTableComponent';
@@ -24,19 +24,18 @@ const NursingList = () => {
     const loadData = async () => {
       const data = await fetchData();
       setUsers(data);
-
-      if (data.length) {
-        const lastDate = Math.max(...data.map(user => new Date(user.DateLastModified)));
-        if (!isNaN(lastDate)) {
-          setLastModifiedDate(new Date(lastDate).toLocaleDateString());
-        } else {
-          setLastModifiedDate(new Date().toLocaleDateString());
-        }
-      }
+      updateLastModifiedDate(data);
       setIsLoading(false);
     };
     loadData();
   }, []);
+
+  const updateLastModifiedDate = (data) => {
+    if (data.length) {
+      const lastDate = Math.max(...data.map(user => new Date(user.DateLastModified)));
+      setLastModifiedDate(!isNaN(lastDate) ? new Date(lastDate).toLocaleDateString() : new Date().toLocaleDateString());
+    }
+  };
 
   const handleDeleteClick = (id) => {
     setDeleteUserId(id);
@@ -48,7 +47,7 @@ const NursingList = () => {
       const response = await fetch('https://7krr77tjrd.execute-api.eu-north-1.amazonaws.com/DeleteNurseData', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: deleteUserId })
+        body: JSON.stringify({ id: deleteUserId }),
       });
 
       if (!response.ok) throw new Error('Failed to delete nurse');
@@ -80,20 +79,18 @@ const NursingList = () => {
     setEditModalVisible(false);
   };
 
-  const handleUpdateSuccess = async () => {
-    const data = await fetchData();
-    setUsers(data);
-
-    if (data.length) {
-      const lastDate = Math.max(...data.map(user => new Date(user.DateLastModified)));
-      if (!isNaN(lastDate)) {
-        setLastModifiedDate(new Date(lastDate).toLocaleDateString());
-      } else {
-        setLastModifiedDate(new Date().toLocaleDateString());
-      }
-    }
-
+  const handleUpdateSuccess = (updatedUser) => {
+    setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
+    updateLastModifiedDate(users);
+    setAlert({ visible: true, message: 'Nurse updated successfully.', color: 'success' });
     setEditModalVisible(false);
+  };
+
+  const handleAddSuccess = (newUser) => {
+    setUsers([...users, newUser]);
+    updateLastModifiedDate([...users, newUser]);
+    setAlert({ visible: true, message: 'Nurse added successfully.', color: 'success' });
+    setAddNurseVisible(false);
   };
 
   const numberOfRecords = users.length;
@@ -150,29 +147,20 @@ const NursingList = () => {
 
           <EditNurse 
             user={selectedUser} 
-            setUsers={setUsers} 
-            setAlert={setAlert} 
-            handleCancel={handleCancelEdit} 
             onSuccess={handleUpdateSuccess} 
+            handleCancel={handleCancelEdit} 
             modalVisible={editModalVisible} 
             setModalVisible={setEditModalVisible} 
+            setUsers={setUsers} 
+            setAlert={setAlert} 
           />
 
-          {/* Add Nurse Modal */}
-          <CModal 
-            visible={addNurseVisible} 
-            onClose={() => setAddNurseVisible(false)} 
-            backdrop="static"
-            size='xl'
-            alignment="center"
-          >
-            <CModalHeader closeButton>
-              <h2>Add Nurse</h2> 
-            </CModalHeader>
-            <CModalBody>
-              <AddNurse setUsers={setUsers} setAlert={setAlert} />
-            </CModalBody>
-          </CModal>
+          <AddNurse 
+            setUsers={setUsers} 
+            showModal={addNurseVisible} 
+            handleClose={() => setAddNurseVisible(false)} 
+            onSuccess={handleAddSuccess} 
+          />
           
         </CCardBody>
       </CCard>

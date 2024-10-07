@@ -55,7 +55,6 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel, modalVisible, setMo
 
   return (
     <CModal
-      size="xl"
       visible={modalVisible} 
       onClose={() => setModalVisible(false)}
       alignment="center"
