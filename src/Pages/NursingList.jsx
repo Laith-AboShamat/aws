@@ -172,11 +172,6 @@ const NursingList = () => {
             <CModalBody>
               <AddNurse setUsers={setUsers} setAlert={setAlert} />
             </CModalBody>
-            <CModalFooter>
-              <CButton color="secondary" onClick={() => setAddNurseVisible(false)}>
-                Close
-              </CButton>
-            </CModalFooter>
           </CModal>
           
         </CCardBody>
