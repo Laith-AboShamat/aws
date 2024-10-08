@@ -14,7 +14,7 @@ import AddNurseForm from '../components/Forms/AddNurseForm';
 import AlertComponent from '../components/Tables/AlertComponent';
 import fetchData from '../utils/fetchData';
 
-const AddNurse = ({ setUsers, showModal, handleClose }) => {
+const AddNurse = ({ setUsers, showModal, handleClose, onSuccess }) => {
   const [newUser, setNewUser] = useState({
     givenName: '',
     familyName: '',
@@ -93,7 +93,8 @@ const AddNurse = ({ setUsers, showModal, handleClose }) => {
         status: '',
       });
 
-      setAlert({ visible: true, message: 'User added successfully!', color: 'success' });
+      onSuccess(newNurse);
+      handleClose();
     } catch (error) {
       console.error('Error adding user:', error);
       setAlert({ visible: true, message: 'Error adding user.', color: 'danger' });

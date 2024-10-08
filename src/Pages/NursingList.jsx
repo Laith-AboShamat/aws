@@ -86,10 +86,12 @@ const NursingList = () => {
     setEditModalVisible(false);
   };
 
-  const handleAddSuccess = (newUser) => {
-    setUsers([...users, newUser]);
-    updateLastModifiedDate([...users, newUser]);
-    setAlert({ visible: true, message: 'Nurse added successfully.', color: 'success' });
+  const handleAddSuccess = async (newUser) => {
+    console.log('User added:', newUser); // Check if this is logged
+    // Fetch the updated user list
+    const updatedUsers = await fetchData();
+    setUsers(updatedUsers); // Update users with the latest data
+    setAlert({ visible: true, message: 'Nurse added successfully!', color: 'success' });
     setAddNurseVisible(false);
   };
 
@@ -159,9 +161,8 @@ const NursingList = () => {
             setUsers={setUsers} 
             showModal={addNurseVisible} 
             handleClose={() => setAddNurseVisible(false)} 
-            onSuccess={handleAddSuccess} 
+            onSuccess={handleAddSuccess} // Pass handleAddSuccess to onSuccess
           />
-          
         </CCardBody>
       </CCard>
     </div>

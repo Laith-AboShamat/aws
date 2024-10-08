@@ -7,16 +7,17 @@ const fetchData = async () => {
 
       const mappedData = data.map(user => ({
         id: user.id,
-        givenName: user.GivenName,
-        familyName: user.FamilyName,
-        phone: user.Phone,
-        email: user.Email,
-        status: user.Status,
-        createdBy: user.CreatedBy,
-        dateCreated: user.DateCreated,
-        lastModifiedBy: user.LastModifiedBy,
-        dateLastModified: user.DateLastModified,
+        givenName: user.GivenName || user.givenName,
+        familyName: user.FamilyName || user.familyName,
+        phone: user.Phone || user.phone,
+        email: user.Email || user.email,
+        status: user.Status || user.status,
+        createdBy: user.CreatedBy || user.createdBy,
+        dateCreated: user.DateCreated || user.dateCreated,
+        lastModifiedBy: user.LastModifiedBy || user.lastModifiedBy,
+        dateLastModified: user.DateLastModified || user.dateLastModified,
       }));
+      
       
       return mappedData;
     } catch (error) {
