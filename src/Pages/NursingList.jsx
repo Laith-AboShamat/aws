@@ -87,10 +87,9 @@ const NursingList = () => {
   };
 
   const handleAddSuccess = async (newUser) => {
-    console.log('User added:', newUser); // Check if this is logged
-    // Fetch the updated user list
+    console.log('User added:', newUser);
     const updatedUsers = await fetchData();
-    setUsers(updatedUsers); // Update users with the latest data
+    setUsers(updatedUsers);
     setAlert({ visible: true, message: 'Nurse added successfully!', color: 'success' });
     setAddNurseVisible(false);
   };
@@ -105,7 +104,16 @@ const NursingList = () => {
         </CCardHeader>
         <CCardBody>
           <AlertComponent alert={alert} setAlert={setAlert} />
-          <SearchComponent search={search} setSearch={setSearch} />
+          
+          {/* Flex container for search and button */}
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+            <div style={{ flexGrow: 1, marginRight: '10px' }}>
+              <SearchComponent search={search} setSearch={setSearch} />
+            </div>
+            <CButton color="primary" onClick={() => setAddNurseVisible(true)}>
+              Add Nurse
+            </CButton>
+          </div>
 
           {isLoading ? (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
@@ -121,7 +129,6 @@ const NursingList = () => {
           )}
 
           <div style={{ borderTop: '1px solid #ddd', paddingTop: '10px', marginTop: '20px' }}>
-            <CButton color="primary" onClick={() => setAddNurseVisible(true)}>Add Nurse</CButton>
             <span style={{ marginLeft: '40px', marginRight: '40px'}}>Last Modified: {lastModifiedDate}</span>
             <span style={{ marginLeft: '20px' }}>Total Records: {numberOfRecords}</span>
           </div>
