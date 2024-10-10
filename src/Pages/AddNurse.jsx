@@ -21,6 +21,8 @@ const AddNurse = ({ setUsers, showModal, handleClose, onSuccess }) => {
     phone: '',
     email: '',
     status: '',
+    gender: '',  // New field
+    birthday: '', // New field
   });
   const [alert, setAlert] = useState({ visible: false, message: '', color: '' });
 
@@ -40,7 +42,7 @@ const AddNurse = ({ setUsers, showModal, handleClose, onSuccess }) => {
   const handleAddUser = async (e) => {
     e.preventDefault();
 
-    if (!newUser.givenName || !newUser.familyName || !newUser.phone || !newUser.email || !newUser.status) {
+    if (!newUser.givenName || !newUser.familyName || !newUser.phone || !newUser.email || !newUser.status || !newUser.gender || !newUser.birthday) {
       setAlert({ visible: true, message: 'Please fill in all fields.', color: 'danger' });
       return;
     }
@@ -76,6 +78,8 @@ const AddNurse = ({ setUsers, showModal, handleClose, onSuccess }) => {
         phone: data.phone || newUser.phone,
         email: data.email || newUser.email,
         status: data.status || newUser.status,
+        gender: data.gender || newUser.gender, // New field
+        birthday: data.birthday || newUser.birthday, // New field
         createdBy: data.createdBy || newUser.createdBy,
         dateCreated: formatDateTime(data.dateCreated || newUser.dateCreated),
         lastModifiedBy: data.lastModifiedBy || newUser.lastModifiedBy,
@@ -91,6 +95,8 @@ const AddNurse = ({ setUsers, showModal, handleClose, onSuccess }) => {
         phone: '',
         email: '',
         status: '',
+        gender: '',  // Reset field
+        birthday: '', // Reset field
       });
 
       onSuccess(newNurse);

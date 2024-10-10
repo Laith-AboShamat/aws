@@ -90,6 +90,36 @@ const AddNurseForm = ({ user, setUser }) => {
         </CFormSelect>
         <CFormFeedback invalid>Please select a status.</CFormFeedback>
       </CCol>
+
+      <CCol md="12" className="mb-3">
+        <CFormLabel htmlFor="gender">Gender</CFormLabel>
+        <CFormSelect
+          id="gender"
+          name="gender"
+          value={user.gender || ''}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </CFormSelect>
+        <CFormFeedback invalid>Please select a gender.</CFormFeedback>
+      </CCol>
+
+      <CCol md="12" className="mb-3">
+        <CFormLabel htmlFor="birthday">Birthday</CFormLabel>
+        <CFormInput
+          type="date"
+          id="birthday"
+          name="birthday"
+          value={user.birthday || ''}
+          onChange={handleInputChange}
+          required
+        />
+        <CFormFeedback invalid>Please enter a valid birthday.</CFormFeedback>
+      </CCol>
     </CForm>
   );
 };

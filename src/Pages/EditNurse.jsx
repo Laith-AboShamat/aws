@@ -15,7 +15,7 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel, modalVisible, setMo
   const handleSave = async (e) => {
     e.preventDefault();
 
-    if (!editedUser.givenName || !editedUser.familyName || !editedUser.phone || !editedUser.email || !editedUser.status) {
+    if (!editedUser.givenName || !editedUser.familyName || !editedUser.phone || !editedUser.email || !editedUser.status || !editedUser.gender || !editedUser.birthday) {
       setAlertState({ visible: true, message: 'Please fill in all required fields.', color: 'danger' });
       return;
     }
@@ -27,6 +27,8 @@ const EditNurse = ({ user, setUsers, setAlert, handleCancel, modalVisible, setMo
       Phone: editedUser.phone,
       Email: editedUser.email,
       Status: editedUser.status,
+      Gender: editedUser.gender,
+      Birthday: editedUser.birthday,
       LastModifiedBy: 'laith',
       DateLastModified: new Date().toLocaleDateString('en-CA'),
       CreatedBy: editedUser.createdBy || 'laith',
