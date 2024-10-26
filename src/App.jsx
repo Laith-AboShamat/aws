@@ -11,13 +11,13 @@ import Sidebar from './Layout/SideBar';
 import NursingList from './Pages/NursingList';
 import Scheduler from './Pages/Scheduler';
 import Header from './Layout/Header';
-import AddNurse from './Pages/AddNurse';
-import Home from './Pages/Home';
+import Home from './Pages/Dashboard';
+import Dashboard from './Pages/Dashboard';
 
 Amplify.configure(awsconfig);
 
 function App() {
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState('dashboard');
 
   return (
     <Authenticator>
@@ -27,7 +27,7 @@ function App() {
 
           <div className="main-content">
             <Header />
-            {activeSection === 'home' && <Home />}
+            {activeSection === 'dashboard' && <Dashboard />}
             {activeSection === 'nursingList' && <NursingList />}
             {activeSection === 'scheduler' && <Scheduler />}
           </div>

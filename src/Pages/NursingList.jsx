@@ -168,7 +168,7 @@ const NursingList = () => {
             setUsers={setUsers} 
             showModal={addNurseVisible} 
             handleClose={() => setAddNurseVisible(false)} 
-            onSuccess={handleAddSuccess} // Pass handleAddSuccess to onSuccess
+            onSuccess={handleAddSuccess}
           />
         </CCardBody>
       </CCard>

@@ -17,9 +17,9 @@ const Sidebar = ({ setActiveSection, signOut }) => {
       <CSidebarNav>
         <CNavTitle>Nursing Scheduler</CNavTitle>
 
-        <CNavItem href="#" onClick={() => setActiveSection('home')}>
+        <CNavItem href="#" onClick={() => setActiveSection('dashboard')}>
           <CIcon customClassName="nav-icon" icon={cilHome} />
-          Home
+          Dashboard
         </CNavItem>
         
         <CNavItem href="#" onClick={() => setActiveSection('nursingList')}>
