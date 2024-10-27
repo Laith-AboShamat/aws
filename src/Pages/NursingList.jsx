@@ -105,7 +105,6 @@ const NursingList = () => {
         <CCardBody>
           <AlertComponent alert={alert} setAlert={setAlert} />
           
-          {/* Flex container for search and button */}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
             <div style={{ flexGrow: 1, marginRight: '10px' }}>
               <SearchComponent search={search} setSearch={setSearch} />

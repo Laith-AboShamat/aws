@@ -19,8 +19,10 @@
     "apexcharts": "^3.54.1",
     "aws-amplify": "^6.6.4",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.5",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.2",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-spinners": "^0.14.1"
   },
